@@ -1,0 +1,16 @@
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #main,
+  #main * {
+    visibility: visible;
+  }
+
+  #main {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
