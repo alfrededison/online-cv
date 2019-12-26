@@ -1,12 +1,19 @@
-import React from 'react';
-import Helmet from 'react-helmet';
-
 import './App.scss';
 
-import {cv} from "../../data";
+import React from 'react';
+import Helmet from 'react-helmet';
+import axios from 'axios';
+
+import {ResumeData} from "../../interface";
 import {cpaToText, displayYearMonth, generateMetaSkillTags, getIcon} from "../../utils";
 
-const App: React.FC = () => {
+axios.defaults.baseURL = process.env.REACT_APP_FUNCTION_URL;
+
+const getResumeData = (resumeId: string) => {
+  return axios.get(`/resume/${resumeId}`)
+};
+
+const renderResume = (cv: ResumeData) => {
   return (
     <>
       <Helmet>
@@ -89,8 +96,9 @@ const App: React.FC = () => {
                               <div className="resume-company-name ml-auto"><a
                                 href={item.Company.Link}>{item.Company.Text}</a></div>
                             </div>
-                            <div
-                              className="resume-position-time">{item.Period.From.getFullYear()} - {item.Period.To?.getFullYear() || 'Present'}</div>
+                            <div className="resume-position-time">
+                              {new Date(item.Period.From).getFullYear()} - {item.Period.To ? new Date(item.Period.To).getFullYear() : 'Present'}
+                            </div>
                           </div>
                           {item.Projects.map(project =>
                             <div className="resume-timeline-item-desc mb-4" key={btoa(project.Description)}>
@@ -152,8 +160,9 @@ const App: React.FC = () => {
                       <li className="mb-2">
                         <div className="resume-degree font-weight-bold">{cv.Education.Title}</div>
                         <div className="resume-degree-org">{cv.Education.School}</div>
-                        <div
-                          className="resume-degree-time">{cv.Education.Period.From.getFullYear()} - {cv.Education.Period.To?.getFullYear() || 'Present'}</div>
+                        <div className="resume-degree-time">
+                          {new Date(cv.Education.Period.From).getFullYear()} - {cv.Education.Period.To ? new Date(cv.Education.Period.To).getFullYear() : 'Present'}
+                        </div>
                         <div>
                           <p>{cv.Education.Description}</p>
                           <p>
@@ -175,7 +184,7 @@ const App: React.FC = () => {
                              data-fa-transform="shrink-2"/>
                           <div className="resume-award-name">{cert.Title}</div>
                           <div className="resume-degree-org">{cert.School}</div>
-                          <div className="resume-degree-time">{displayYearMonth(cert.Date)}</div>
+                          <div className="resume-degree-time">{displayYearMonth(new Date(cert.Date))}</div>
                           <div className="resume-award-desc">{cert.Description}</div>
                         </li>
                       )}
@@ -211,8 +220,9 @@ const App: React.FC = () => {
       </article>
       <footer className="footer text-center pt-2 pb-5">
         <small className="copyright">
-          Designed with <i className="fas fa-heart"/> by <a href="http://themes.3rdwavemedia.com" target="_blank" rel="noopener noreferrer" id="credit-link">
-          Xiaoying Riley</a> for developers
+          Designed with <i className="fas fa-heart"/> by <a
+          href="http://themes.3rdwavemedia.com" target="_blank" rel="noopener noreferrer" id="credit-link">Xiaoying
+          Riley</a> for developers
         </small>
         <a href="https://github.com/alfrededison/online-cv" id="source-link">
           <img
@@ -225,5 +235,30 @@ const App: React.FC = () => {
     </>
   );
 };
+
+type Props = {}
+type State = {
+  resume?: ResumeData
+};
+
+class App extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {};
+
+    const resumeId = process.env.REACT_APP_USER_ID || '';
+    getResumeData(resumeId).then(res => {
+      this.setState({
+        resume: res.data
+      });
+    }).catch(err => {
+      console.error(err);
+    });
+  }
+
+  render() {
+    return this.state.resume ? renderResume(this.state.resume) : <div/>;
+  };
+}
 
 export default App;
