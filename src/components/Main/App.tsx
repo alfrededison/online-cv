@@ -17,10 +17,11 @@ const renderResume = (cv: ResumeData) => {
   return (
     <>
       <Helmet>
-        <title>{cv.Profile.Name + " Resume/CV"}</title>
-        <meta name="theme-color" content="#42A8C0"/>
-        <meta name="description" content={cv.Profile.Title}/>
+        <title>{cv.Profile.Name + " - " + cv.Profile.Title}</title>
+        <meta name="theme-color" content="#429bf6"/>
+        <meta name="description" content={cv.About[0]}/>
         <meta name="keywords" content={generateMetaSkillTags(cv.Skills)}/>
+        <link rel="canonical" href={process.env.REACT_APP_HOSTING_URL}/>
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet"/>
         <script defer src="https://use.fontawesome.com/releases/v5.1.1/js/all.js"
                 integrity="sha384-BtvRZcyfv4r0x/phJt9Y9HhnN5ur1Z+kZbKVgzVBAlQZX4jvAuImlIz+bG7TS00a"
