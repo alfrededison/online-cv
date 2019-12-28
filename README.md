@@ -70,6 +70,13 @@ yarn build
 firebase deploy --only hosting
 ```
 
+or
+
+```
+yarn build
+yarn deploy
+```
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
