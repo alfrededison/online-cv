@@ -1,4 +1,5 @@
-const {db} = require('../util/admin');
+const FieldValue = require('firebase').firestore.FieldValue;
+const db = require('../util/firebase').firestore();
 
 exports.getAllResumes = (req, res) => {
   db.collection('resumes')
@@ -15,7 +16,7 @@ exports.getAllResumes = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).json({error: err.code});
+      return res.status(500).json({error: err.code});
     });
 };
 
@@ -61,15 +62,17 @@ exports.postOneResume = (req, res) => {
 
   db.collection('resumes')
     .doc(resumeId)
-    .set(resumeData)
-    .then((result) => {
+    .set({
+      ...resumeData,
+      timestamp: FieldValue.serverTimestamp()
+    })
+    .then(() => {
       return res.json({
         resumeId: resumeId,
-        timestamp: result.writeTime.toDate()
       });
     })
     .catch((err) => {
       console.error(err);
-      res.status(500).json({error: 'something went wrong'});
+      return res.status(500).json({error: 'something went wrong'});
     });
 };
