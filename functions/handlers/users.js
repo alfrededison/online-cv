@@ -42,7 +42,7 @@ exports.register = (req, res) => {
     .then((idToken) => {
       token = idToken;
       const userCredentials = {
-        userId,
+        uid: userId,
         resume: newUser.resume,
         email: newUser.email,
         createdAt: FieldValue.serverTimestamp()

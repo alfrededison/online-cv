@@ -29,10 +29,7 @@ exports.getResume = (req, res) => {
       if (!doc.exists) {
         return res.status(HttpStatus.NOT_FOUND).json({error: 'Resume not found'});
       }
-      return res.json({
-        resumeId: doc.id,
-        ...doc.data()
-      });
+      return res.json(doc.data());
     })
     .catch((err) => {
       console.error(err);
@@ -65,11 +62,13 @@ exports.postOneResume = (req, res) => {
     .doc(resumeId)
     .set({
       ...resumeData,
+      resumeId,
       timestamp: FieldValue.serverTimestamp()
     })
     .then(() => {
       return res.json({
         resumeId: resumeId,
+        timestamp: new Date()
       });
     })
     .catch((err) => {
