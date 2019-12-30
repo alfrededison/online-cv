@@ -10,8 +10,18 @@ const {
   postOneResume
 } = require('./handlers/resumes');
 
+const {
+  register,
+  login
+} = require('./handlers/users');
+
+// resumes routes
 app.get('/resumes', getAllResumes);
 app.get('/resume/:resumeId', getResume);
 app.post('/resume/:resumeId', postOneResume);
+
+// users routes
+app.post('/register', register);
+app.post('/login', login);
 
 exports.api = functions.region('asia-east2').https.onRequest(app);
