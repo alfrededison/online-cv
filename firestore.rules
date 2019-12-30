@@ -1,8 +1,26 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    match /users/{resumeId} {
+      allow read: if true;
+
+      // Make sure the uid of the requesting user matches uid of the user document.
+      allow update, delete: if request.auth.uid == resource.data.uid;
+
+      // The wildcard expression {resumeId} makes the resumeId variable available in rules.
+      // Make sure resume is consistent.
+      allow create: if request.resource.data.uid == request.auth.uid
+                    && request.resource.data.resume == resumeId;
+    }
+    // Check if a 'users' document exists for the requesting user and resume is consistent
+    function ownedByUser(resumeId) {
+      return get(/databases/$(database)/documents/users/$(resumeId)).data.uid == request.auth.uid;
+    }
+    match /resumes/{resumeId} {
+      // Make sure only own user can write to the resume
+      allow create, update: if ownedByUser(resumeId);
+      // Make sure a resume can only be read if public or by its owner
+      allow read: if resource.data.visibility == true || ownedByUser(resumeId);
     }
   }
 }

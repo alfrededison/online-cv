@@ -55,10 +55,13 @@ exports.register = (req, res) => {
     .catch((err) => {
       console.error(err);
       switch (err.code) {
+        case 'auth/invalid-email':
         case 'auth/email-already-in-use':
           return res.status(HttpStatus.BAD_REQUEST).json({email: err.message});
         case 'auth/weak-password':
           return res.status(HttpStatus.BAD_REQUEST).json({password: err.message});
+        case 'permission-denied':
+          return res.status(HttpStatus.BAD_REQUEST).json({general: "You don't have permission to perform this action"});
         default:
           return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
             .json({general: 'Something went wrong, please try again or contact support'});

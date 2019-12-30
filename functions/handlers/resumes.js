@@ -45,6 +45,10 @@ exports.postOneResume = (req, res) => {
     return;
   }
 
+  if (req.body.visibility === undefined) {
+    req.body.visibility = true;
+  }
+
   const resumeData = {
     Profile: req.body.Profile,
     About: req.body.About,
@@ -56,6 +60,7 @@ exports.postOneResume = (req, res) => {
     Certificates: req.body.Certificates,
     Languages: req.body.Languages,
     Interests: req.body.Interests,
+    visibility: req.body.visibility
   };
 
   db.collection('resumes')
