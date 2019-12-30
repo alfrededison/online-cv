@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const FieldValue = require('firebase').firestore.FieldValue;
 const firebase = require('../util/firebase');
 const db = firebase.firestore();
@@ -20,7 +21,7 @@ exports.register = (req, res) => {
   const {valid, errors} = validateSignUpData(newUser);
 
   if (!valid) {
-    res.status(400).json(errors);
+    res.status(HttpStatus.BAD_REQUEST).json(errors);
     return;
   }
 
@@ -29,7 +30,7 @@ exports.register = (req, res) => {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        return res.status(400).json({resume: 'This resume is already taken'});
+        return res.status(HttpStatus.BAD_REQUEST).json({resume: 'This resume is already taken'});
       } else {
         return auth.createUserWithEmailAndPassword(newUser.email, newUser.password);
       }
@@ -49,17 +50,18 @@ exports.register = (req, res) => {
       return db.doc(`/users/${newUser.resume}`).set(userCredentials);
     })
     .then(() => {
-      return res.status(201).json({token});
+      return res.status(HttpStatus.CREATED).json({token});
     })
     .catch((err) => {
       console.error(err);
       switch (err.code) {
         case 'auth/email-already-in-use':
-          return res.status(400).json({email: err.message});
+          return res.status(HttpStatus.BAD_REQUEST).json({email: err.message});
         case 'auth/weak-password':
-          return res.status(400).json({password: err.message});
+          return res.status(HttpStatus.BAD_REQUEST).json({password: err.message});
         default:
-          return res.status(500).json({general: 'Something went wrong, please try again or contact support'});
+          return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .json({general: 'Something went wrong, please try again or contact support'});
       }
     });
 };
@@ -73,7 +75,7 @@ exports.login = (req, res) => {
   const {valid, errors} = validateLoginData(user);
 
   if (!valid) {
-    res.status(400).json(errors);
+    res.status(HttpStatus.BAD_REQUEST).json(errors);
     return;
   }
 
@@ -89,7 +91,7 @@ exports.login = (req, res) => {
       // auth/wrong-password
       // auth/user-not-user
       return res
-        .status(403)
+        .status(HttpStatus.BAD_REQUEST)
         .json({general: 'Wrong credentials, please try again'});
     });
 };

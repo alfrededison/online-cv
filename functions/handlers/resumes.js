@@ -1,3 +1,4 @@
+const HttpStatus = require('http-status-codes');
 const FieldValue = require('firebase').firestore.FieldValue;
 const db = require('../util/firebase').firestore();
 
@@ -16,7 +17,7 @@ exports.getAllResumes = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(500).json({error: err.code});
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: err.code});
     });
 };
 
@@ -26,7 +27,7 @@ exports.getResume = (req, res) => {
     .get()
     .then((doc) => {
       if (!doc.exists) {
-        return res.status(404).json({error: 'Resume not found'});
+        return res.status(HttpStatus.NOT_FOUND).json({error: 'Resume not found'});
       }
       return res.json({
         resumeId: doc.id,
@@ -35,7 +36,7 @@ exports.getResume = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(500).json({error: err.code});
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: err.code});
     });
 };
 
@@ -43,7 +44,7 @@ exports.getResume = (req, res) => {
 exports.postOneResume = (req, res) => {
   const resumeId = req.params.resumeId;
   if (!resumeId || resumeId.trim() === '') {
-    res.status(400).json({resumeId: 'ResumeId must not be empty'});
+    res.status(HttpStatus.BAD_REQUEST).json({resumeId: 'ResumeId must not be empty'});
     return;
   }
 
@@ -73,6 +74,6 @@ exports.postOneResume = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      return res.status(500).json({error: 'something went wrong'});
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: 'something went wrong'});
     });
 };
