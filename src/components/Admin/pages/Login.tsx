@@ -4,24 +4,11 @@ import axios from 'axios';
 import {Button, createStyles, Grid, TextField, Theme, Typography, withStyles, WithStyles} from '@material-ui/core';
 import {Link, RouteComponentProps} from 'react-router-dom';
 import {trackPromise} from "react-promise-tracker";
+import {themeStyles} from "../utils/theme";
 
 const styles = (theme: Theme) =>
   createStyles({
-    form: {
-      textAlign: 'center'
-    },
-    textField: {
-      margin: '10px auto 10px auto'
-    },
-    button: {
-      marginTop: 20,
-      position: 'relative'
-    },
-    customError: {
-      color: 'red',
-      fontSize: '0.8rem',
-      marginTop: 10
-    },
+    ...themeStyles
   });
 
 interface Props extends WithStyles<typeof styles>, RouteComponentProps<any> {
