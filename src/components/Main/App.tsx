@@ -15,7 +15,7 @@ const App: React.FC = () => {
       <Route exact path="/">
         <Resume resumeId={resumeId}/>
       </Route>
-      <Route exact path="/manage">
+      <Route path="/manage">
         <Admin/>
       </Route>
     </Switch>
