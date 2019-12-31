@@ -30,7 +30,9 @@ exports.register = (req, res) => {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        return res.status(HttpStatus.BAD_REQUEST).json({resume: 'This resume is already taken'});
+        const err = new Error('This resume is already taken');
+        err.code = 'duplicate-resume';
+        throw err;
       } else {
         return auth.createUserWithEmailAndPassword(newUser.email, newUser.password);
       }
@@ -55,6 +57,8 @@ exports.register = (req, res) => {
     .catch((err) => {
       console.error(err);
       switch (err.code) {
+        case 'duplicate-resume':
+          return res.status(HttpStatus.BAD_REQUEST).json({resume: err.message});
         case 'auth/invalid-email':
         case 'auth/email-already-in-use':
           return res.status(HttpStatus.BAD_REQUEST).json({email: err.message});
