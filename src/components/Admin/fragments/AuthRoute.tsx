@@ -1,11 +1,16 @@
 // @flow
 import * as React from "react";
 import {Redirect, Route, RouteProps} from "react-router-dom";
+import {connect, ConnectedProps} from 'react-redux';
+import {AppState} from "../redux/store";
 
-interface Props extends RouteProps {
-  authenticated: boolean
+interface PropsFromRedux extends ConnectedProps<typeof connector> {
 }
-export class AuthRoute extends Route<Props> {
+
+interface Props extends RouteProps, PropsFromRedux {
+}
+
+class authRoute extends Route<Props> {
   render() {
     if (this.props.authenticated) {
       return <Redirect to="/manage"/>;
@@ -15,3 +20,14 @@ export class AuthRoute extends Route<Props> {
   }
 }
 
+function mapStateToProps(state: AppState) {
+  return {
+    authenticated: state.user.authenticated
+  };
+}
+
+const connector = connect(
+  mapStateToProps
+);
+
+export const AuthRoute = connector(authRoute);
