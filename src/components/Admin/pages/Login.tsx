@@ -1,23 +1,26 @@
 // @flow
 import * as React from 'react';
-import axios from 'axios';
 import {Button, createStyles, Grid, TextField, Theme, Typography, withStyles, WithStyles} from '@material-ui/core';
 import {Link, RouteComponentProps} from 'react-router-dom';
-import {trackPromise} from "react-promise-tracker";
+import {connect, ConnectedProps} from "react-redux";
 import {themeStyles} from "../utils/theme";
+import {loginUser} from "../redux/actions/userActions";
+import {AppState} from "../redux/store";
+import {JSONData} from "../interface";
 
-const styles = (theme: Theme) =>
-  createStyles({
-    ...themeStyles
-  });
+interface PropsFromStyles extends WithStyles<typeof styles> {
+}
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps<any> {
+interface PropsFromRedux extends ConnectedProps<typeof connector> {
+}
+
+interface Props extends RouteComponentProps<any>, PropsFromStyles, PropsFromRedux {
 }
 
 type State = {
   email: string
   password: string
-  errors?: { [key: string]: string }
+  errors?: JSONData
 };
 
 class login extends React.Component<Props, State> {
@@ -30,6 +33,14 @@ class login extends React.Component<Props, State> {
     }
   }
 
+  componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+    if (nextProps.UI.errors) {
+      this.setState({
+        errors: nextProps.UI.errors
+      })
+    }
+  }
+
   //@ts-ignore
   handleSubmit = (event) => {
     event.preventDefault();
@@ -37,18 +48,7 @@ class login extends React.Component<Props, State> {
       email: this.state.email,
       password: this.state.password,
     };
-    trackPromise(
-      axios.post('/login', loginData)
-        .then(res => {
-          localStorage.setItem('token', res.data.token);
-          this.props.history.push('/manage');
-        })
-        .catch(err => {
-          this.setState({
-            errors: err.response.data
-          })
-        })
-    ).then();
+    this.props.loginUser(loginData, this.props.history);
   };
 
   //@ts-ignore
@@ -92,4 +92,23 @@ class login extends React.Component<Props, State> {
   };
 }
 
-export const Login = withStyles(styles)(login);
+const styles = (theme: Theme) =>
+  createStyles({
+    ...themeStyles
+  });
+
+const mapStateToProps = (state: AppState) => ({
+  user: state.user,
+  UI: state.UI
+});
+
+const mapActionsToProps = {
+  loginUser
+};
+
+const connector = connect(
+  mapStateToProps,
+  mapActionsToProps
+);
+
+export const Login = connector(withStyles(styles)(login));

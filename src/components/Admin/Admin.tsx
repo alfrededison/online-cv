@@ -4,6 +4,7 @@ import * as React from 'react';
 import {BrowserRouter, Switch} from "react-router-dom";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import JwtDecode from 'jwt-decode';
+import {Provider} from 'react-redux';
 
 import {themeConfig} from './utils/theme';
 
@@ -14,6 +15,8 @@ import {Register} from "./pages/Register";
 import {Login} from "./pages/Login";
 import {AuthRoute} from "./fragments/AuthRoute";
 import {ProtectedRoute} from "./fragments/ProtectedRoute";
+
+import store from "./redux/store";
 
 const theme = createMuiTheme(themeConfig);
 
@@ -30,7 +33,7 @@ if (token) {
 export const Admin = () => {
   return (
     <MuiThemeProvider theme={theme}>
-      <div>
+      <Provider store={store}>
         <BrowserRouter>
           <NavBar/>
           <div className="container">
@@ -41,7 +44,7 @@ export const Admin = () => {
             </Switch>
           </div>
         </BrowserRouter>
-      </div>
+      </Provider>
     </MuiThemeProvider>
   );
 };
