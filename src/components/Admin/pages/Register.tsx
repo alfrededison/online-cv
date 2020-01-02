@@ -1,17 +1,19 @@
 // @flow
 import * as React from 'react';
-import axios from 'axios';
 import {Button, createStyles, Grid, TextField, Theme, Typography, withStyles, WithStyles} from '@material-ui/core';
 import {Link, RouteComponentProps} from 'react-router-dom';
-import {trackPromise} from "react-promise-tracker";
+import {connect, ConnectedProps} from "react-redux";
 import {themeStyles} from "../utils/theme";
+import {registerUser} from "../redux/actions/userActions";
+import {AppState} from "../redux/store";
 
-const styles = (theme: Theme) =>
-  createStyles({
-    ...themeStyles
-  });
+interface PropsFromStyles extends WithStyles<typeof styles> {
+}
 
-interface Props extends WithStyles<typeof styles>, RouteComponentProps<any> {
+interface PropsFromRedux extends ConnectedProps<typeof connector> {
+}
+
+interface Props extends RouteComponentProps<any>, PropsFromStyles, PropsFromRedux {
 }
 
 type State = {
@@ -34,6 +36,14 @@ class register extends React.Component<Props, State> {
     }
   }
 
+  componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
+    if (nextProps.UI.errors) {
+      this.setState({
+        errors: nextProps.UI.errors
+      })
+    }
+  }
+
   //@ts-ignore
   handleSubmit = (event) => {
     event.preventDefault();
@@ -43,18 +53,7 @@ class register extends React.Component<Props, State> {
       confirmPassword: this.state.confirmPassword,
       resume: this.state.resume,
     };
-    trackPromise(
-      axios.post('/register', registerData)
-        .then(res => {
-          localStorage.setItem('token', res.data.token);
-          this.props.history.push('/manage');
-        })
-        .catch(err => {
-          this.setState({
-            errors: err.response.data
-          })
-        })
-    ).then();
+    this.props.registerUser(registerData, this.props.history);
   };
 
   //@ts-ignore
@@ -106,4 +105,23 @@ class register extends React.Component<Props, State> {
   };
 }
 
-export const Register = withStyles(styles)(register);
+const styles = (theme: Theme) =>
+  createStyles({
+    ...themeStyles
+  });
+
+const mapStateToProps = (state: AppState) => ({
+  user: state.user,
+  UI: state.UI
+});
+
+const mapActionsToProps = {
+  registerUser
+};
+
+const connector = connect(
+  mapStateToProps,
+  mapActionsToProps
+);
+
+export const Register = connector(withStyles(styles)(register));
