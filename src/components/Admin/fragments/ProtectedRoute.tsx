@@ -9,6 +9,7 @@ interface PropsFromRedux extends ConnectedProps<typeof connector> {
 
 interface Props extends RouteProps, PropsFromRedux {
 }
+
 class protectedRoute extends Route<Props> {
   render() {
     if (this.props.authenticated) {

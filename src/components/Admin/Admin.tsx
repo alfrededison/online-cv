@@ -1,7 +1,7 @@
 // @flow
 import './Admin.scss';
 import * as React from 'react';
-import {BrowserRouter, Switch} from "react-router-dom";
+import {BrowserRouter, Switch, Route, RouteComponentProps} from "react-router-dom";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import JwtDecode from 'jwt-decode';
 import {Provider} from 'react-redux';
@@ -21,6 +21,8 @@ import {Login} from "./pages/Login";
 import {JSONData} from "./interface";
 import {logoutUser} from "./redux/actions/userActions";
 import {SET_AUTHENTICATED} from "./redux/types";
+import About from "./pages/About";
+import NotFound from "../NotFound/NotFound";
 
 const theme = createMuiTheme(themeConfig);
 
@@ -36,21 +38,26 @@ if (token) {
   }
 }
 
-export const Admin = () => {
-  return (
-    <MuiThemeProvider theme={theme}>
-      <Provider store={store}>
-        <BrowserRouter>
-          <NavBar/>
-          <div className="container">
-            <Switch>
-              <ProtectedRoute exact path="/manage" component={Home}/>
-              <AuthRoute exact path="/manage/login" component={Login}/>
-              <AuthRoute exact path="/manage/register" component={Register}/>
-            </Switch>
-          </div>
-        </BrowserRouter>
-      </Provider>
-    </MuiThemeProvider>
-  );
-};
+export class Admin extends React.Component<RouteComponentProps> {
+  render() {
+    const { match } = this.props;
+    return (
+      <MuiThemeProvider theme={theme}>
+        <Provider store={store}>
+          <BrowserRouter>
+            <NavBar rootUrl={match.url}/>
+            <div className="container">
+              <Switch>
+                <ProtectedRoute exact path={match.url} component={Home}/>
+                <AuthRoute path={`${match.url}/login`} component={Login}/>
+                <AuthRoute path={`${match.url}/register`} component={Register}/>
+                <Route path={`${match.url}/about`} component={About}/>
+                <Route component={NotFound}/>
+              </Switch>
+            </div>
+          </BrowserRouter>
+        </Provider>
+      </MuiThemeProvider>
+    );
+  }
+}
