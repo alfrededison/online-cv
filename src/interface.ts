@@ -1,6 +1,6 @@
 export interface ResumeData {
   Profile: ProfileData
-  About: string[]
+  About: AboutData
   PrimaryContact: PrimaryContactData
   SecondaryContacts: SecondaryContactData[]
   Skills: SkillGroupData[]
@@ -8,7 +8,7 @@ export interface ResumeData {
   Education: EducationData
   Certificates: CertificateData[]
   Languages: LanguageData[]
-  Interests: string[]
+  Interests: InterestData[]
 }
 
 export interface ProfileData {
@@ -16,6 +16,8 @@ export interface ProfileData {
   Title: string
   Avatar: string
 }
+
+export type AboutData = string[]
 
 export interface PrimaryContactData {
   DOB: Date,
@@ -82,3 +84,5 @@ export interface LanguageData {
   Language: string
   Level: string
 }
+
+export type InterestData = string
