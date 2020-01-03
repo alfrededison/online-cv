@@ -2,25 +2,6 @@ const HttpStatus = require('http-status-codes');
 const FieldValue = require('firebase').firestore.FieldValue;
 const db = require('../util/firebase').firestore();
 
-exports.getAllResumes = (req, res) => {
-  db.collection('resumes')
-    .get()
-    .then((data) => {
-      let resumes = [];
-      data.forEach((doc) => {
-        resumes.push({
-          resumeId: doc.id,
-          ...doc.data()
-        });
-      });
-      return res.json(resumes);
-    })
-    .catch((err) => {
-      console.error(err);
-      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: err.code});
-    });
-};
-
 // Fetch one resume
 exports.getResume = (req, res) => {
   db.doc(`/resumes/${req.params.resumeId}`)

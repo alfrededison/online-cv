@@ -1,3 +1,4 @@
+const JwtDecode = require('jwt-decode');
 const HttpStatus = require('http-status-codes');
 const FieldValue = require('firebase').firestore.FieldValue;
 const firebase = require('../util/firebase');
@@ -100,5 +101,40 @@ exports.login = (req, res) => {
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({general: 'Wrong credentials, please try again'});
+    });
+};
+
+// Get own user details
+exports.getAuthenticatedUser = (req, res) => {
+  let idToken;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer ')
+  ) {
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  } else {
+    console.error('No token found');
+    res.status(HttpStatus.UNAUTHORIZED).json({error: 'Unauthorized'});
+    return;
+  }
+
+  const decodedToken = JwtDecode(idToken);
+  if (!decodedToken.user_id) {
+    console.error('Cannot find user id from token');
+    res.status(HttpStatus.BAD_REQUEST).json({error: 'Bad format token'});
+    return;
+  }
+
+  let userData = {};
+  db.collection('users')
+    .where('uid', '==', decodedToken.user_id)
+    .limit(1)
+    .get()
+    .then((data) => {
+      return res.json(data.docs[0].data());
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({error: err.code});
     });
 };
