@@ -5,6 +5,7 @@ import {AppBar, Button, Toolbar} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import {connect, ConnectedProps} from "react-redux";
 import {AppState} from "../redux/store";
+import {logoutUser} from "../redux/actions/userActions";
 
 interface PropsFromRedux extends ConnectedProps<typeof connector> {
 }
@@ -14,6 +15,10 @@ interface Props extends PropsFromRedux {
 }
 
 class navBar extends React.Component<Props> {
+  handleLogout = () => {
+    this.props.logoutUser();
+  };
+
   render() {
     return (
       <AppBar>
@@ -21,6 +26,7 @@ class navBar extends React.Component<Props> {
           {this.props.authenticated ? (
             <Fragment>
               <Button color="inherit" component={Link} to={this.props.rootUrl}>Home</Button>
+              <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
             </Fragment>
           ) : (
             <Fragment>
@@ -41,8 +47,13 @@ function mapStateToProps(state: AppState) {
   };
 }
 
+const mapActionsToProps = {
+  logoutUser
+};
+
 const connector = connect(
-  mapStateToProps
+  mapStateToProps,
+  mapActionsToProps
 );
 
 export const NavBar = connector(navBar);
