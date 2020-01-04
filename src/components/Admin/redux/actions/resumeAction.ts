@@ -23,6 +23,12 @@ export const loadResume = (resumeId: string) => (dispatch: Dispatch) => {
   ).then();
 };
 
+export const editResume = (resumeInfo: Partial<ResumeData>) => (dispatch: Dispatch) => {
+  dispatch({
+    type: ActionTypes.EDIT_RESUME,
+    payload: resumeInfo
+  })
+};
 
 export const updateResume = (resumeId: string, resumeData: ResumeData) => (dispatch: Dispatch<any>) => {
   trackPromise(

@@ -44,6 +44,11 @@ export default function (state = initialState, action: AppAction): ResumeData {
   switch (action.type) {
     case ActionTypes.LOAD_RESUME:
       return {
+        ...initialState,
+        ...action.payload
+      };
+    case ActionTypes.EDIT_RESUME:
+      return {
         ...state,
         ...action.payload
       };

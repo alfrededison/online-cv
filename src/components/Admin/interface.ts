@@ -1,4 +1,5 @@
 import {Action} from "redux";
+import {ActionTypes} from "./redux/types";
 
 export interface JSONData {
   [key: string]: any
@@ -16,7 +17,7 @@ export interface RegisterData {
   resume: string
 }
 
-export interface AppAction extends Action {
+export interface AppAction extends Action<ActionTypes> {
   payload?: JSONData
 }
 
