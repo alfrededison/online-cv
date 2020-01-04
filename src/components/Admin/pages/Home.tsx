@@ -2,8 +2,9 @@ import React from 'react';
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {a11yProps, TabPanel} from "../fragments/TabPanel";
+import Typography from '@material-ui/core/Typography';
 import {themeStyles} from "../utils/theme";
+import {a11yProps, TabPanel} from "../fragments/TabPanel";
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
@@ -21,7 +22,7 @@ class home extends React.Component<Props, State> {
     super(props);
     this.state = {
       value: 0
-    }
+    };
   }
 
   handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -51,25 +52,25 @@ class home extends React.Component<Props, State> {
           <Tab label="Interests" {...a11yProps(6)} />
         </Tabs>
         <TabPanel value={this.state.value} index={0}>
-          Profile & About
+          <Typography variant="h4">Profile & About</Typography>
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
-          Contact Primary & Secondary
+          <Typography variant="h4">Contact Primary & Secondary</Typography>
         </TabPanel>
         <TabPanel value={this.state.value} index={2}>
-          Skills & Languages
+          <Typography variant="h4">Skills & Languages</Typography>
         </TabPanel>
         <TabPanel value={this.state.value} index={3}>
-          Experiences
+          <Typography variant="h4">Experiences</Typography>
         </TabPanel>
         <TabPanel value={this.state.value} index={4}>
-          Education
+          <Typography variant="h4">Education</Typography>
         </TabPanel>
         <TabPanel value={this.state.value} index={5}>
-          Certificates
+          <Typography variant="h4">Certificates</Typography>
         </TabPanel>
         <TabPanel value={this.state.value} index={6}>
-          Interests
+          <Typography variant="h4">Interests</Typography>
         </TabPanel>
       </div>
     );

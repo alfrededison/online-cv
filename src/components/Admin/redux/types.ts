@@ -7,4 +7,5 @@ export enum ActionTypes {
   SET_ERRORS,
   CLEAR_ERRORS,
   // Resume reducer types
+  LOAD_RESUME,
 }
