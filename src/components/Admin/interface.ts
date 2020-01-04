@@ -22,6 +22,7 @@ export interface AppAction extends Action {
 
 export interface UserState {
   authenticated: boolean
+  user?: JSONData
 }
 
 export interface UIState {

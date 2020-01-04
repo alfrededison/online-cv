@@ -1,5 +1,5 @@
-import {CLEAR_ERRORS, SET_ERRORS} from '../types';
 import {AppAction, UIState} from "../../interface";
+import {ActionTypes} from "../types";
 
 const initialState: UIState = {
   errors: null
@@ -7,12 +7,12 @@ const initialState: UIState = {
 
 export default function (state = initialState, action: AppAction): UIState {
   switch (action.type) {
-    case SET_ERRORS:
+    case ActionTypes.SET_ERRORS:
       return {
         ...state,
         errors: action.payload
       };
-    case CLEAR_ERRORS:
+    case ActionTypes.CLEAR_ERRORS:
       return {
         ...state,
         errors: null
