@@ -24,6 +24,7 @@ import {ActionTypes} from "./redux/types";
 import About from "./pages/About";
 import NotFound from "../NotFound/NotFound";
 import {Preview} from "./pages/Preview";
+import Helmet from "react-helmet";
 
 const theme = createMuiTheme(themeConfig);
 
@@ -50,6 +51,12 @@ export class Admin extends React.Component<RouteComponentProps> {
     return (
       <MuiThemeProvider theme={theme}>
         <Provider store={store}>
+          <Helmet>
+            <title>Resume Editor</title>
+            <meta name="theme-color" content="#429bf6"/>
+            <meta name="description" content="Manage and edit your online resume"/>
+            <meta name="keywords" content="resume editor, online resume"/>
+          </Helmet>
           <BrowserRouter>
             <NavBar rootUrl={match.url}/>
             <div className="container">
