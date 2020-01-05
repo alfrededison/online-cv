@@ -35,7 +35,6 @@ export const updateResume = (resumeId: string, resumeData: ResumeData) => (dispa
     axios.post(`/resume/${resumeId}`, resumeData)
       .then(res => {
         dispatch({type: ActionTypes.CLEAR_ERRORS});
-        dispatch(loadResume(resumeId));
       })
       .catch(err => {
         dispatch({

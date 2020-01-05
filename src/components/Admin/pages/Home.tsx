@@ -8,8 +8,10 @@ import {AppState} from "../redux/store";
 import {themeStyles} from "../utils/theme";
 import {ProfileForm} from "../forms/ProfileForm";
 import {a11yProps, TabPanel} from "../fragments/TabPanel";
-import {editResume, updateResume} from "../redux/actions/resumeAction";
+import {editResume, loadResume, updateResume} from "../redux/actions/resumeAction";
 import {ResumeData} from "../../../interface";
+import {Fab} from "@material-ui/core";
+import {CloudDownload, CloudUpload} from '@material-ui/icons';
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
@@ -39,11 +41,18 @@ class home extends React.Component<Props, State> {
     });
   };
 
-  updateProfile = (data: ResumeData) => {
-    this.props.updateResume(this.props.user.user?.resume, {
-      ...this.props.resume,
-      ...data
-    });
+  handleDownloadResume = () => {
+    if (window.confirm("Are you sure to RELOAD your resume?\nAll changes will be discard!")) {
+      this.props.loadResume(this.props.user.user?.resume);
+    }
+  };
+
+  handleUploadResume = () => {
+    if (window.confirm("Are you sure to SUBMIT your resume?\nAll changes will be persist on the cloud!")) {
+      this.props.updateResume(this.props.user.user?.resume, {
+        ...this.props.resume,
+      });
+    }
   };
 
   handleResumeChange = (data: Partial<ResumeData>) => {
@@ -96,6 +105,15 @@ class home extends React.Component<Props, State> {
         <TabPanel value={this.state.value} index={6}>
           <Typography variant="h4">Interests</Typography>
         </TabPanel>
+        <div className={classes.floatButtons}>
+          <Fab aria-label="Save permanently" color="primary" onClick={this.handleUploadResume}>
+            <CloudUpload/>
+          </Fab>
+          <br/>
+          <Fab aria-label="Reload" color="secondary" onClick={this.handleDownloadResume}>
+            <CloudDownload/>
+          </Fab>
+        </div>
       </div>
     );
   }
@@ -108,10 +126,16 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       backgroundColor: theme.palette.background.paper,
       display: 'flex',
-      height: '100%',
+      height: 'calc(100vh - 80px);',
+      position: 'relative',
     },
     tabs: {
       borderRight: `1px solid ${theme.palette.divider}`,
+    },
+    floatButtons: {
+      position: 'absolute',
+      bottom: theme.spacing(2),
+      right: theme.spacing(2),
     },
   });
 
@@ -122,6 +146,7 @@ const mapStateToProps = (state: AppState) => ({
 });
 
 const mapActionsToProps = {
+  loadResume,
   editResume,
   updateResume
 };

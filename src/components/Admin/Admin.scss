@@ -6,3 +6,14 @@
 .nav-container {
   margin: auto;
 }
+
+.spinner {
+  [aria-busy="true"] {
+    background: rgba(0, 0, 0, 0.25);
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 2100;
+  }
+}
