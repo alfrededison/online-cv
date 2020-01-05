@@ -3,13 +3,21 @@ import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core/sty
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import {connect, ConnectedProps} from "react-redux";
+import {AppState} from "../redux/store";
 import {themeStyles} from "../utils/theme";
+import {ProfileForm} from "../forms/ProfileForm";
 import {a11yProps, TabPanel} from "../fragments/TabPanel";
+import {editResume, updateResume} from "../redux/actions/resumeAction";
+import {ResumeData} from "../../../interface";
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
 
-interface Props extends PropsFromStyles {
+interface PropsFromRedux extends ConnectedProps<typeof connector> {
+}
+
+interface Props extends PropsFromStyles, PropsFromRedux {
 }
 
 type State = {
@@ -29,6 +37,17 @@ class home extends React.Component<Props, State> {
     this.setState({
       value: newValue
     });
+  };
+
+  updateProfile = (data: ResumeData) => {
+    this.props.updateResume(this.props.user.user?.resume, {
+      ...this.props.resume,
+      ...data
+    });
+  };
+
+  handleResumeChange = (data: Partial<ResumeData>) => {
+    this.props.editResume(data);
   };
 
   render() {
@@ -53,6 +72,11 @@ class home extends React.Component<Props, State> {
         </Tabs>
         <TabPanel value={this.state.value} index={0}>
           <Typography variant="h4">Profile & About</Typography>
+          <ProfileForm
+            Profile={this.props.resume.Profile}
+            About={this.props.resume.About}
+            onSubmit={this.handleResumeChange}
+          />
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
           <Typography variant="h4">Contact Primary & Secondary</Typography>
@@ -91,4 +115,20 @@ const styles = (theme: Theme) =>
     },
   });
 
-export const Home = withStyles(styles)(home);
+const mapStateToProps = (state: AppState) => ({
+  user: state.user,
+  resume: state.resume,
+  UI: state.UI
+});
+
+const mapActionsToProps = {
+  editResume,
+  updateResume
+};
+
+const connector = connect(
+  mapStateToProps,
+  mapActionsToProps
+);
+
+export const Home = connector(withStyles(styles)(home));
