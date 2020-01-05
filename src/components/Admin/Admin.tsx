@@ -23,6 +23,7 @@ import {getUserData, logoutUser} from "./redux/actions/userActions";
 import {ActionTypes} from "./redux/types";
 import About from "./pages/About";
 import NotFound from "../NotFound/NotFound";
+import {Preview} from "./pages/Preview";
 
 const theme = createMuiTheme(themeConfig);
 
@@ -54,6 +55,7 @@ export class Admin extends React.Component<RouteComponentProps> {
             <div className="container">
               <Switch>
                 <ProtectedRoute exact path={match.url} component={Home}/>
+                <ProtectedRoute path={`${match.url}/preview`} component={Preview}/>
                 <AuthRoute path={`${match.url}/login`} component={Login}/>
                 <AuthRoute path={`${match.url}/register`} component={Register}/>
                 <Route path={`${match.url}/about`} component={About}/>

@@ -26,6 +26,7 @@ class navBar extends React.Component<Props> {
           {this.props.authenticated ? (
             <Fragment>
               <Button color="inherit" component={Link} to={this.props.rootUrl}>Home</Button>
+              <Button color="inherit" component={Link} to={`${this.props.rootUrl}/preview`}>Preview</Button>
               <Button color="inherit" onClick={this.handleLogout}>Logout</Button>
             </Fragment>
           ) : (
