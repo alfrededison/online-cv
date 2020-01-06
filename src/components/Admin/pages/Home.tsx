@@ -12,6 +12,7 @@ import {editResume, loadResume, updateResume} from "../redux/actions/resumeActio
 import {ResumeData} from "../../../interface";
 import {Fab} from "@material-ui/core";
 import {CloudDownload, CloudUpload} from '@material-ui/icons';
+import {ContactForm} from "../forms/ContactForm";
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
@@ -89,6 +90,11 @@ class home extends React.Component<Props, State> {
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
           <Typography variant="h4">Contact Primary & Secondary</Typography>
+          <ContactForm
+            PrimaryContact={this.props.resume.PrimaryContact}
+            SecondaryContacts={this.props.resume.SecondaryContacts}
+            onSubmit={this.handleResumeChange}
+          />
         </TabPanel>
         <TabPanel value={this.state.value} index={2}>
           <Typography variant="h4">Skills & Languages</Typography>
