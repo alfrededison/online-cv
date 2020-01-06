@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {Field, Form, Formik} from 'formik';
+import {Field, Form, Formik, FormikHelpers} from 'formik';
 import {TextField,} from 'formik-material-ui';
+import {createStyles, Theme, withStyles, WithStyles} from "@material-ui/core";
 import {AboutData, ProfileData} from "../../../interface";
+import {themeStyles} from "../utils/theme";
+import {validateRequired} from "../utils/validators";
 
-type Values = {
-  Name: string
-  Title: string
-  Avatar: string
+type Values = ProfileData & {
   About: string
 }
 
@@ -15,11 +15,14 @@ type Data = {
   About: AboutData
 }
 
-type Props = Data & {
+interface PropsFromStyles extends WithStyles<typeof styles> {
+}
+
+interface Props extends Data, PropsFromStyles {
   onSubmit: (values: Data) => void
 }
 
-export const ProfileForm = (props: Props) => {
+const profileForm = (props: Props) => {
   const initValue: Values = {
     About: props.About.join("\n"),
     ...props.Profile
@@ -35,20 +38,17 @@ export const ProfileForm = (props: Props) => {
     return errors;
   };
 
-  const validateRequired = (value: any) => {
-    if (!value) {
-      return 'This field is required';
-    }
-  };
-
-  const handler = (values: Values) => {
-    const {Name, Title, Avatar, About} = values;
+  const handler = (values: Values, formikHelpers: FormikHelpers<Values>) => {
+    const {About, ...profile} = values;
     const returnValues: Data = {
-      Profile: {Avatar, Name, Title},
+      Profile: {...profile},
       About: About.split(/\r\n|\r|\n/g)
     };
     props.onSubmit(returnValues);
+    formikHelpers.setSubmitting(false);
   };
+
+  const {classes} = props;
 
   return (
     <Formik
@@ -56,28 +56,41 @@ export const ProfileForm = (props: Props) => {
       enableReinitialize
       validate={validators}
       onSubmit={handler}
-      render={({submitForm}) => (
+    >
+      {({submitForm, values, errors}) => (
         <Form onBlur={submitForm}>
           <Field label="Name" name="Name" component={TextField}
-            validate={validateRequired}
+                 validate={validateRequired}
           />
           <br/>
           <Field label="Title" name="Title" component={TextField}
-            validate={validateRequired}
+                 fullWidth
+                 validate={validateRequired}
           />
           <br/>
           <Field label="Avatar" name="Avatar" component={TextField}
-            validate={validateRequired}
-            fullWidth
+                 fullWidth
+                 validate={validateRequired}
           />
+          {values.Avatar && !errors.Avatar && <img src={values.Avatar} className={classes.img} alt="User avatar"/>}
           <br/>
           <Field label="About" name="About" component={TextField}
-            multiline rows="3"
-            fullWidth
-            validate={validateRequired}
+                 multiline rows="3"
+                 fullWidth
+                 validate={validateRequired}
           />
         </Form>
       )}
-    />
+    </Formik>
   )
 };
+
+const styles = (theme: Theme) =>
+  createStyles({
+    ...themeStyles,
+    img: {
+      width: 400
+    }
+  });
+
+export const ProfileForm = withStyles(styles)(profileForm);
