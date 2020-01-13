@@ -1,27 +1,31 @@
 import React from "react";
-import Box from '@material-ui/core/Box';
 import {Field, FieldValidator} from "formik";
 import {TextField} from "formik-material-ui";
+import {Grid} from "@material-ui/core";
 
 interface TextLinkInputProps {
-  name: string;
+  name: string
+  label?: string
   validate?: FieldValidator
 }
 
 export const TextLinkInput = (props: TextLinkInputProps) => {
-  const {name, validate} = props;
+  const {name, label, validate} = props;
 
   return (
-    <Box mt={3}>
-      <Field label={`${name} Text`} name={`${name}.Text`} component={TextField}
-             fullWidth
-             validate={validate}
-      />
-      <br/>
-      <Field label={`${name} Link`} name={`${name}.Link`} component={TextField}
-             fullWidth
-             validate={validate}
-      />
-    </Box>
+    <Grid container spacing={2}>
+      <Grid item>
+        <Field label={(label || name) + " Text"} name={`${name}.Text`} component={TextField}
+               fullWidth
+               validate={validate}
+        />
+      </Grid>
+      <Grid item>
+        <Field label={(label || name) + " Link"} name={`${name}.Link`} component={TextField}
+               fullWidth
+               validate={validate}
+        />
+      </Grid>
+    </Grid>
   );
 };

@@ -89,7 +89,7 @@ class home extends React.Component<Props, State> {
           />
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
-          <Typography variant="h4">Contact Primary & Secondary</Typography>
+          <Typography variant="h4">Contacts</Typography>
           <ContactForm
             PrimaryContact={this.props.resume.PrimaryContact}
             SecondaryContacts={this.props.resume.SecondaryContacts}

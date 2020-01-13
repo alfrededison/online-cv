@@ -1,7 +1,8 @@
 import * as React from 'react';
-import {Field, Form, Formik, FormikHelpers} from 'formik';
+import {Field, FieldArray, Form, Formik, FormikHelpers} from 'formik';
 import {TextField,} from 'formik-material-ui';
-import {createStyles, Theme, withStyles, WithStyles} from "@material-ui/core";
+import {createStyles, Grid, IconButton, Theme, withStyles, WithStyles} from "@material-ui/core";
+import DeleteIcon from '@material-ui/icons/Delete';
 import {PrimaryContactData, SecondaryContactData} from "../../../interface";
 import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
@@ -52,17 +53,45 @@ const contactForm = (props: Props) => {
     >
       {({submitForm, values, errors}) => (
         <Form onBlur={submitForm}>
-          <Field label="DOB" name="DOB" component={TextField}
-                 type="date"
-                 InputLabelProps={{
-                   shrink: true,
-                 }}
-                 validate={validateRequired}
-          />
-          <br/>
-          <TextLinkInput name="Address" validate={validateRequired}/>
-          <TextLinkInput name="Email" validate={validateRequired}/>
-          <TextLinkInput name="Phone" validate={validateRequired}/>
+          <Grid container spacing={4}>
+            <Grid item>
+              <Field label="DOB" name="DOB" component={TextField}
+                     type="date"
+                     InputLabelProps={{
+                       shrink: true,
+                     }}
+                     validate={validateRequired}
+              />
+              <br/>
+              <TextLinkInput name="Address" validate={validateRequired}/>
+              <TextLinkInput name="Email" validate={validateRequired}/>
+              <TextLinkInput name="Phone" validate={validateRequired}/>
+            </Grid>
+            <Grid item>
+              <FieldArray name="Others" render={arrayHelpers => (
+                <div>
+                  {values.Others.map((contact, index) => (
+                    <Grid container key={index} spacing={2}>
+                      <Grid item>
+                        <Field label="Type" name={`Others.${index}.Type`} component={TextField}/>
+                      </Grid>
+                      <Grid item>
+                        <TextLinkInput label={(contact.Type || '') + " Contact"} name={`Others.${index}.Value`}/>
+                      </Grid>
+                      <Grid item>
+                        <IconButton aria-label="delete" onClick={() => arrayHelpers.remove(index)}>
+                          <DeleteIcon/>
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  ))}
+                  <button type="button" onClick={() => arrayHelpers.push('')}>
+                    Add a contact
+                  </button>
+                </div>
+              )}/>
+            </Grid>
+          </Grid>
         </Form>
       )}
     </Formik>
