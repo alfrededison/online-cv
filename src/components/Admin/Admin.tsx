@@ -61,11 +61,11 @@ export class Admin extends React.Component<RouteComponentProps> {
             <NavBar rootUrl={match.url}/>
             <div className="container">
               <Switch>
-                <ProtectedRoute exact path={match.url} component={Home}/>
                 <ProtectedRoute path={`${match.url}/preview`} component={Preview}/>
                 <AuthRoute path={`${match.url}/login`} component={Login}/>
                 <AuthRoute path={`${match.url}/register`} component={Register}/>
                 <Route path={`${match.url}/about`} component={About}/>
+                <ProtectedRoute path={match.url} component={Home}/>
                 <Route component={NotFound}/>
               </Switch>
             </div>

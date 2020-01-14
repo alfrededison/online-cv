@@ -1,18 +1,17 @@
 import React from 'react';
 import {createStyles, Theme, WithStyles, withStyles} from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import {connect, ConnectedProps} from "react-redux";
+import {Fab, Typography} from "@material-ui/core";
+import {CloudDownload, CloudUpload} from '@material-ui/icons';
+import {RouteComponentProps} from 'react-router-dom';
+
 import {AppState} from "../redux/store";
 import {themeStyles} from "../utils/theme";
-import {ProfileForm} from "../forms/ProfileForm";
-import {a11yProps, TabPanel} from "../fragments/TabPanel";
 import {editResume, loadResume, updateResume} from "../redux/actions/resumeAction";
 import {ResumeData} from "../../../interface";
-import {Fab} from "@material-ui/core";
-import {CloudDownload, CloudUpload} from '@material-ui/icons';
+import {TabData, VerticalRoutingTabs} from "../fragments/VerticalRoutingTabs";
 import {ContactForm} from "../forms/ContactForm";
+import {ProfileForm} from '../forms/ProfileForm';
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
@@ -20,27 +19,10 @@ interface PropsFromStyles extends WithStyles<typeof styles> {
 interface PropsFromRedux extends ConnectedProps<typeof connector> {
 }
 
-interface Props extends PropsFromStyles, PropsFromRedux {
+interface Props extends RouteComponentProps, PropsFromStyles, PropsFromRedux {
 }
 
-type State = {
-  value: number
-}
-
-class home extends React.Component<Props, State> {
-
-  constructor(props: Readonly<Props>) {
-    super(props);
-    this.state = {
-      value: 0
-    };
-  }
-
-  handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    this.setState({
-      value: newValue
-    });
-  };
+class home extends React.Component<Props> {
 
   handleDownloadResume = () => {
     if (window.confirm("Are you sure to RELOAD your resume?\nAll changes will be discard!")) {
@@ -61,56 +43,86 @@ class home extends React.Component<Props, State> {
   };
 
   render() {
-    const {classes} = this.props;
+    const tabs: TabData[] = [
+      {
+        label: "Profile",
+        route: this.props.match.url,
+        children: (
+          <>
+            <Typography variant="h4">Profile &amp; About</Typography>
+            <ProfileForm
+              Profile={this.props.resume.Profile}
+              About={this.props.resume.About}
+              onSubmit={this.handleResumeChange}
+            />
+          </>
+        )
+      },
+      {
+        label: "Contacts",
+        route: `${this.props.match.url}/contacts`,
+        children: (
+          <>
+            <Typography variant="h4">Contacts</Typography>
+            <ContactForm
+              PrimaryContact={this.props.resume.PrimaryContact}
+              SecondaryContacts={this.props.resume.SecondaryContacts}
+              onSubmit={this.handleResumeChange}
+            />
+          </>
+        )
+      },
+      {
+        label: "Skills",
+        route: `${this.props.match.url}/skills`,
+        children: (
+          <>
+            <Typography variant="h4">Skills &amp; Languages</Typography>
+          </>
+        )
+      },
+      {
+        label: "Experiences",
+        route: `${this.props.match.url}/experiences`,
+        children: (
+          <>
+            <Typography variant="h4">Experiences</Typography>
+          </>
+        )
+      },
+      {
+        label: "Education",
+        route: `${this.props.match.url}/education`,
+        children: (
+          <>
+            <Typography variant="h4">Education</Typography>
+          </>
+        )
+      },
+      {
+        label: "Certificates",
+        route: `${this.props.match.url}/certificates`,
+        children: (
+          <>
+            <Typography variant="h4">Certificates</Typography>
+          </>
+        )
+      },
+      {
+        label: "Interests",
+        route: `${this.props.match.url}/interests`,
+        children: (
+          <>
+            <Typography variant="h4">Interests</Typography>
+          </>
+        )
+      }
+    ];
+
+    const {classes, ...others} = this.props;
     return (
       <div className={classes.root}>
-        <Tabs
-          value={this.state.value}
-          onChange={this.handleChange}
-          orientation="vertical"
-          variant="scrollable"
-          aria-label="resume section tabs"
-          className={classes.tabs}
-        >
-          <Tab label="Profile" {...a11yProps(0)} />
-          <Tab label="Contact" {...a11yProps(1)} />
-          <Tab label="Skills" {...a11yProps(2)} />
-          <Tab label="Experiences" {...a11yProps(3)} />
-          <Tab label="Education" {...a11yProps(4)} />
-          <Tab label="Certificates" {...a11yProps(5)} />
-          <Tab label="Interests" {...a11yProps(6)} />
-        </Tabs>
-        <TabPanel value={this.state.value} index={0}>
-          <Typography variant="h4">Profile & About</Typography>
-          <ProfileForm
-            Profile={this.props.resume.Profile}
-            About={this.props.resume.About}
-            onSubmit={this.handleResumeChange}
-          />
-        </TabPanel>
-        <TabPanel value={this.state.value} index={1}>
-          <Typography variant="h4">Contacts</Typography>
-          <ContactForm
-            PrimaryContact={this.props.resume.PrimaryContact}
-            SecondaryContacts={this.props.resume.SecondaryContacts}
-            onSubmit={this.handleResumeChange}
-          />
-        </TabPanel>
-        <TabPanel value={this.state.value} index={2}>
-          <Typography variant="h4">Skills & Languages</Typography>
-        </TabPanel>
-        <TabPanel value={this.state.value} index={3}>
-          <Typography variant="h4">Experiences</Typography>
-        </TabPanel>
-        <TabPanel value={this.state.value} index={4}>
-          <Typography variant="h4">Education</Typography>
-        </TabPanel>
-        <TabPanel value={this.state.value} index={5}>
-          <Typography variant="h4">Certificates</Typography>
-        </TabPanel>
-        <TabPanel value={this.state.value} index={6}>
-          <Typography variant="h4">Interests</Typography>
-        </TabPanel>
+        <VerticalRoutingTabs tabs={tabs} {...others}/>
         <div className={classes.floatButtons}>
           <Fab aria-label="Save permanently" color="primary" onClick={this.handleUploadResume}>
             <CloudUpload/>
@@ -134,9 +146,6 @@ const styles = (theme: Theme) =>
       display: 'flex',
       height: 'calc(100vh - 80px);',
       position: 'relative',
-    },
-    tabs: {
-      borderRight: `1px solid ${theme.palette.divider}`,
     },
     floatButtons: {
       position: 'absolute',
