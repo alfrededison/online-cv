@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {RouteComponentProps} from 'react-router-dom';
 import {Box, createStyles, Tab, Tabs, Theme, Typography, withStyles, WithStyles} from "@material-ui/core";
 import {themeStyles} from "../utils/theme";
+import Helmet from "react-helmet";
 
 export type TabData = {
   label: string
@@ -10,6 +11,8 @@ export type TabData = {
 }
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
+  withTitle?: boolean
+  titlePrefix?: string
 }
 
 interface Props extends RouteComponentProps, PropsFromStyles {
@@ -42,6 +45,11 @@ class tabs extends Component<Props> {
         </Tabs>
         {this.props.tabs.map(tab => (
           <TabPanel value={this.getValue()} index={tab.route} key={tab.route}>
+            {this.props.withTitle && (
+              <Helmet>
+                <title>{this.props.titlePrefix + tab.label}</title>
+              </Helmet>
+            )}
             {tab.children}
           </TabPanel>
         ))}

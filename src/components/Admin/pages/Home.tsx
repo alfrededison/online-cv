@@ -122,7 +122,7 @@ class home extends React.Component<Props> {
     const {classes, ...others} = this.props;
     return (
       <div className={classes.root}>
-        <VerticalRoutingTabs tabs={tabs} {...others}/>
+        <VerticalRoutingTabs tabs={tabs} {...others} withTitle={true} titlePrefix="Resume Editior | "/>
         <div className={classes.floatButtons}>
           <Fab aria-label="Save permanently" color="primary" onClick={this.handleUploadResume}>
             <CloudUpload/>
