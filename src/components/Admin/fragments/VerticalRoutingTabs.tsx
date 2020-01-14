@@ -92,6 +92,7 @@ const styles = (theme: Theme) =>
     ...themeStyles,
     tabs: {
       borderRight: `1px solid ${theme.palette.divider}`,
+      minWidth: 150,
     },
   });
 

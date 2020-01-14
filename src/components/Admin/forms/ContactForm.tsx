@@ -1,8 +1,11 @@
 import * as React from 'react';
 import {Field, FieldArray, Form, Formik, FormikHelpers} from 'formik';
 import {TextField,} from 'formik-material-ui';
-import {createStyles, Grid, IconButton, Theme, withStyles, WithStyles} from "@material-ui/core";
+import {Button, createStyles, Grid, IconButton, Theme, withStyles, WithStyles} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import ContactsIcon from '@material-ui/icons/Contacts';
+
 import {PrimaryContactData, SecondaryContactData} from "../../../interface";
 import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
@@ -28,6 +31,14 @@ const contactForm = (props: Props) => {
   const initValue: Values = {
     ...props.PrimaryContact,
     Others: props.SecondaryContacts
+  };
+
+  const initElementValue: SecondaryContactData = {
+    Type: '',
+    Value: {
+      Text: '',
+      Link: '',
+    }
   };
 
   const validators = (values: Values) => {
@@ -67,10 +78,10 @@ const contactForm = (props: Props) => {
               <TextLinkInput name="Email" validate={validateRequired}/>
               <TextLinkInput name="Phone" validate={validateRequired}/>
             </Grid>
-            <Grid item>
-              <FieldArray name="Others" render={arrayHelpers => (
-                <div>
-                  {values.Others.map((contact, index) => (
+            <FieldArray name="Others" render={arrayHelpers => (
+              <Grid item>
+                {values.Others && values.Others.length > 0 ? (
+                  values.Others.map((contact, index) => (
                     <Grid container key={index} spacing={2}>
                       <Grid item>
                         <Field label="Type" name={`Others.${index}.Type`} component={TextField}/>
@@ -83,14 +94,23 @@ const contactForm = (props: Props) => {
                           <DeleteIcon/>
                         </IconButton>
                       </Grid>
+                      <Grid item>
+                        <IconButton aria-label="add"
+                                    onClick={() => arrayHelpers.insert(index + 1, {...initElementValue})}>
+                          <AddCircleIcon/>
+                        </IconButton>
+                      </Grid>
                     </Grid>
-                  ))}
-                  <button type="button" onClick={() => arrayHelpers.push('')}>
+                  ))
+                ) : (
+                  <Button variant="contained" color="primary"
+                          startIcon={<ContactsIcon/>}
+                          onClick={() => arrayHelpers.push({...initElementValue})}>
                     Add a contact
-                  </button>
-                </div>
-              )}/>
-            </Grid>
+                  </Button>
+                )}
+              </Grid>
+            )}/>
           </Grid>
         </Form>
       )}

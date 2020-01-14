@@ -144,7 +144,8 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       backgroundColor: theme.palette.background.paper,
       display: 'flex',
-      height: 'calc(100vh - 80px);',
+      minHeight: 'calc(100vh - 80px)',
+      height: '100%',
       position: 'relative',
     },
     floatButtons: {
