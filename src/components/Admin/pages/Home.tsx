@@ -12,6 +12,7 @@ import {ResumeData} from "../../../interface";
 import {TabData, VerticalRoutingTabs} from "../fragments/VerticalRoutingTabs";
 import {ContactForm} from "../forms/ContactForm";
 import {ProfileForm} from '../forms/ProfileForm';
+import {SkillForm} from "../forms/SkillForm";
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
@@ -77,7 +78,11 @@ class home extends React.Component<Props> {
         route: `${this.props.match.url}/skills`,
         children: (
           <>
-            <Typography variant="h4">Skills &amp; Languages</Typography>
+            <Typography variant="h4">Skills</Typography>
+            <SkillForm
+              Skills={this.props.resume.Skills}
+              onSubmit={this.handleResumeChange}
+            />
           </>
         )
       },
@@ -95,7 +100,7 @@ class home extends React.Component<Props> {
         route: `${this.props.match.url}/education`,
         children: (
           <>
-            <Typography variant="h4">Education</Typography>
+            <Typography variant="h4">Education &amp; Languages</Typography>
           </>
         )
       },

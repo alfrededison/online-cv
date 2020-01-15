@@ -28,4 +28,7 @@ export const themeStyles: StyleRules = {
     fontSize: '0.8rem',
     marginTop: 10
   },
+  warning: {
+    backgroundColor: 'orange',
+  }
 };
