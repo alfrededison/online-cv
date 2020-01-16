@@ -91,6 +91,16 @@ const profileForm = (props: Props) => {
               )}
             </Grid>
             <Grid item xs={12}>
+              <Field label="DOB" name="Profile.DOB" component={TextField}
+                     type="date"
+                     InputLabelProps={{
+                       shrink: true,
+                     }}
+                     required
+                     validate={validateRequired}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <Field label="About" name="About" component={TextField}
                      multiline rows="3"
                      fullWidth

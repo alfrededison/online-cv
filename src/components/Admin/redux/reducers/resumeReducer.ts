@@ -29,12 +29,12 @@ const initialState: ResumeData = {
     Address: {...initialTextLink},
     Phone: {...initialTextLink},
     Email: {...initialTextLink},
-    DOB: new Date(),
   },
   Profile: {
     Title: '',
     Avatar: '',
     Name: '',
+    DOB: new Date(),
   },
   SecondaryContacts: [],
   Skills: []

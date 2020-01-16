@@ -58,16 +58,6 @@ const contactForm = (props: Props) => {
           <Grid container spacing={4}>
             <Grid container item spacing={2}>
               <Grid item xs={12}>
-                <Field label="DOB" name="PrimaryContact.DOB" component={TextField}
-                       type="date"
-                       InputLabelProps={{
-                         shrink: true,
-                       }}
-                       required
-                       validate={validateRequired}
-                />
-              </Grid>
-              <Grid item xs={12}>
                 <TextLinkInput name="PrimaryContact.Address"
                                label="Address"
                                required

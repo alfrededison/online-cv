@@ -15,12 +15,12 @@ export interface ProfileData {
   Name: string
   Title: string
   Avatar: string
+  DOB: Date
 }
 
 export type AboutData = string[]
 
 export interface PrimaryContactData {
-  DOB: Date,
   Address: TextLinkData
   Email: TextLinkData
   Phone: TextLinkData
