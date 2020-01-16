@@ -16,8 +16,6 @@ type Data = {
   Skills: SkillGroupData[]
 };
 
-type Values = Data;
-
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
 
@@ -26,7 +24,7 @@ interface Props extends Data, PropsFromStyles {
 }
 
 const skillForm = (props: Props) => {
-  const initValue: Values = {
+  const initValue: Data = {
     Skills: props.Skills
   };
 
@@ -40,11 +38,11 @@ const skillForm = (props: Props) => {
     ],
   };
 
-  const validators = (values: Values) => {
+  const validators = (values: Data) => {
 
   };
 
-  const handler = (values: Values, formikHelpers: FormikHelpers<Values>) => {
+  const handler = (values: Data, formikHelpers: FormikHelpers<Data>) => {
     props.onSubmit(values);
     formikHelpers.setSubmitting(false);
   };

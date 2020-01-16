@@ -11,10 +11,6 @@ import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
 import {TextLinkInput} from "../fragments/TextLinkInput";
 
-type Values = PrimaryContactData & {
-  Others: SecondaryContactData[]
-}
-
 type Data = {
   PrimaryContact: PrimaryContactData
   SecondaryContacts: SecondaryContactData[]
@@ -28,9 +24,9 @@ interface Props extends Data, PropsFromStyles {
 }
 
 const contactForm = (props: Props) => {
-  const initValue: Values = {
-    ...props.PrimaryContact,
-    Others: props.SecondaryContacts
+  const initValue: Data = {
+    PrimaryContact: props.PrimaryContact,
+    SecondaryContacts: props.SecondaryContacts
   };
 
   const initElementValue: SecondaryContactData = {
@@ -41,17 +37,12 @@ const contactForm = (props: Props) => {
     }
   };
 
-  const validators = (values: Values) => {
+  const validators = (values: Data) => {
 
   };
 
-  const handler = (values: Values, formikHelpers: FormikHelpers<Values>) => {
-    const {Others, ...primary} = values;
-    const returnValues: Data = {
-      PrimaryContact: {...primary},
-      SecondaryContacts: Others,
-    };
-    props.onSubmit(returnValues);
+  const handler = (values: Data, formikHelpers: FormikHelpers<Data>) => {
+    props.onSubmit(values);
     formikHelpers.setSubmitting(false);
   };
 
@@ -67,7 +58,7 @@ const contactForm = (props: Props) => {
           <Grid container spacing={4}>
             <Grid container item spacing={2}>
               <Grid item xs={12}>
-                <Field label="DOB" name="DOB" component={TextField}
+                <Field label="DOB" name="PrimaryContact.DOB" component={TextField}
                        type="date"
                        InputLabelProps={{
                          shrink: true,
@@ -77,29 +68,38 @@ const contactForm = (props: Props) => {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextLinkInput name="Address" required validate={validateRequired}/>
+                <TextLinkInput name="PrimaryContact.Address"
+                               label="Address"
+                               required
+                               validate={validateRequired}/>
               </Grid>
               <Grid item xs={12}>
-                <TextLinkInput name="Email" required validate={validateRequired}/>
+                <TextLinkInput name="PrimaryContact.Email"
+                               label="Email"
+                               required
+                               validate={validateRequired}/>
               </Grid>
               <Grid item xs={12}>
-                <TextLinkInput name="Phone" required validate={validateRequired}/>
+                <TextLinkInput name="PrimaryContact.Phone"
+                               label="Phone"
+                               required
+                               validate={validateRequired}/>
               </Grid>
             </Grid>
-            <FieldArray name="Others" render={arrayHelpers => (
-              values.Others && values.Others.length > 0 ? (
-                values.Others.map((contact, index) => (
+            <FieldArray name="SecondaryContacts" render={arrayHelpers => (
+              values.SecondaryContacts && values.SecondaryContacts.length > 0 ? (
+                values.SecondaryContacts.map((contact, index) => (
                   <Grid container item key={index} spacing={2}>
                     <Grid item>
-                      <Field label="Type" name={`Others.${index}.Type`}
+                      <Field label="Type" name={`SecondaryContacts.${index}.Type`}
                              component={TextField}
                              required
                              validate={validateRequired}
                       />
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={6}>
                       <TextLinkInput label={(contact.Type || '') + " Contact"}
-                                     name={`Others.${index}.Value`}
+                                     name={`SecondaryContacts.${index}.Value`}
                                      required
                                      validate={validateRequired}
                       />

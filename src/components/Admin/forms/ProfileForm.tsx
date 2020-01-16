@@ -6,13 +6,18 @@ import {AboutData, ProfileData} from "../../../interface";
 import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
 
-type Values = ProfileData & {
-  About: string
-}
+type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>;
+};
 
 type Data = {
   Profile: ProfileData
   About: AboutData
+}
+
+type Values = {
+  Profile: ProfileData
+  About: string
 }
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
@@ -24,25 +29,26 @@ interface Props extends Data, PropsFromStyles {
 
 const profileForm = (props: Props) => {
   const initValue: Values = {
+    Profile: props.Profile,
     About: props.About.join("\n"),
-    ...props.Profile
   };
 
   const validators = (values: Values) => {
-    const errors: Partial<Values> = {};
+    const errors: RecursivePartial<Values> = {};
     if (
-      !/^(http(s?):)([/.\w\s-])*\.(?:jpg|png)$/i.test(values.Avatar)
+      !/^(http(s?):)([/.\w\s-])*\.(?:jpg|png)$/i.test(values.Profile.Avatar)
     ) {
-      errors.Avatar = 'Invalid image address';
+      errors.Profile = {
+        Avatar: 'Invalid image address'
+      };
     }
     return errors;
   };
 
   const handler = (values: Values, formikHelpers: FormikHelpers<Values>) => {
-    const {About, ...profile} = values;
     const returnValues: Data = {
-      Profile: {...profile},
-      About: About.split(/\r\n|\r|\n/g)
+      Profile: values.Profile,
+      About: values.About.split(/\r\n|\r|\n/g)
     };
     props.onSubmit(returnValues);
     formikHelpers.setSubmitting(false);
@@ -61,26 +67,28 @@ const profileForm = (props: Props) => {
         <Form onBlur={submitForm}>
           <Grid container spacing={4}>
             <Grid item xs={5}>
-              <Field label="Name" name="Name" component={TextField}
+              <Field label="Name" name="Profile.Name" component={TextField}
                      fullWidth
                      required
                      validate={validateRequired}
               />
             </Grid>
             <Grid item xs={7}>
-              <Field label="Title" name="Title" component={TextField}
+              <Field label="Title" name="Profile.Title" component={TextField}
                      fullWidth
                      required
                      validate={validateRequired}
               />
             </Grid>
             <Grid item xs={12}>
-              <Field label="Avatar" name="Avatar" component={TextField}
+              <Field label="Avatar" name="Profile.Avatar" component={TextField}
                      fullWidth
                      required
                      validate={validateRequired}
               />
-              {values.Avatar && !errors.Avatar && <img src={values.Avatar} className={classes.img} alt="User avatar"/>}
+              {values.Profile.Avatar && !(errors.Profile && errors.Profile.Avatar) && (
+                <img src={values.Profile.Avatar} className={classes.img} alt="User avatar"/>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Field label="About" name="About" component={TextField}

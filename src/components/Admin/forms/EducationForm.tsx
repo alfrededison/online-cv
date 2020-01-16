@@ -15,8 +15,6 @@ type Data = {
   Languages: LanguageData[]
 }
 
-type Values = Data;
-
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
 
@@ -25,7 +23,7 @@ interface Props extends Data, PropsFromStyles {
 }
 
 const educationForm = (props: Props) => {
-  const initValue: Values = {
+  const initValue: Data = {
     Education: props.Education,
     Languages: props.Languages,
   };
@@ -35,11 +33,11 @@ const educationForm = (props: Props) => {
     Level: '',
   };
 
-  const validators = (values: Values) => {
+  const validators = (values: Data) => {
 
   };
 
-  const handler = (values: Values, formikHelpers: FormikHelpers<Values>) => {
+  const handler = (values: Data, formikHelpers: FormikHelpers<Data>) => {
     props.onSubmit(values);
     formikHelpers.setSubmitting(false);
   };

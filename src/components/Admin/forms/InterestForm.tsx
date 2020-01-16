@@ -14,8 +14,6 @@ type Data = {
   Interests: InterestData[]
 }
 
-type Values = Data;
-
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
 
@@ -24,17 +22,17 @@ interface Props extends Data, PropsFromStyles {
 }
 
 const interestForm = (props: Props) => {
-  const initValue: Values = {
+  const initValue: Data = {
     Interests: props.Interests,
   };
 
   const initElementValue: InterestData = '';
 
-  const validators = (values: Values) => {
+  const validators = (values: Data) => {
 
   };
 
-  const handler = (values: Values, formikHelpers: FormikHelpers<Values>) => {
+  const handler = (values: Data, formikHelpers: FormikHelpers<Data>) => {
     props.onSubmit(values);
     formikHelpers.setSubmitting(false);
   };
