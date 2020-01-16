@@ -67,7 +67,7 @@ const educationForm = (props: Props) => {
                        required
                        validate={validateRequired}/>
               </Grid>
-              <Grid container item xs={6}>
+              <Grid container item xs={12} lg={6} spacing={2}>
                 <Grid item xs={6}>
                   <Field label="From" name="Education.Period.From" type="date"
                          component={TextField}

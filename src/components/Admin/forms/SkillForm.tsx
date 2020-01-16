@@ -81,7 +81,7 @@ const skillForm = (props: Props) => {
                         </Button>
                       </Grid>
                     </Grid>
-                    <SkillItem name={`Skills.${index}.Items`} values={skillGroup.Items}/>
+                    <SkillItems name={`Skills.${index}.Items`} values={skillGroup.Items}/>
                   </Grid>
                 ))
               ) : (
@@ -101,12 +101,12 @@ const skillForm = (props: Props) => {
   )
 };
 
-interface SkillItemProps {
+interface SkillItemsProps {
   name: string
   values: Array<any>
 }
 
-const SkillItem = (props: SkillItemProps) => {
+const SkillItems = (props: SkillItemsProps) => {
   const initElementValue: SkillItemData = {
     Name: '',
     Level: 0,

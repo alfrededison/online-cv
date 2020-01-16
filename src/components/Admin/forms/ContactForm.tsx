@@ -87,7 +87,7 @@ const contactForm = (props: Props) => {
                              validate={validateRequired}
                       />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} lg={6}>
                       <TextLinkInput label={(contact.Type || '') + " Contact"}
                                      name={`SecondaryContacts.${index}.Value`}
                                      required
