@@ -13,6 +13,7 @@ import {TabData, VerticalRoutingTabs} from "../fragments/VerticalRoutingTabs";
 import {ContactForm} from "../forms/ContactForm";
 import {ProfileForm} from '../forms/ProfileForm';
 import {SkillForm} from "../forms/SkillForm";
+import {EducationForm} from "../forms/EducationForm";
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
@@ -101,6 +102,11 @@ class home extends React.Component<Props> {
         children: (
           <>
             <Typography variant="h4">Education &amp; Languages</Typography>
+            <EducationForm
+              Education={this.props.resume.Education}
+              Languages={this.props.resume.Languages}
+              onSubmit={this.handleResumeChange}
+            />
           </>
         )
       },
