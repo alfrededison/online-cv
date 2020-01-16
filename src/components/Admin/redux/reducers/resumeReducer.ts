@@ -9,7 +9,7 @@ const initialTextLink: TextLinkData = {
 
 const initialPeriod: PeriodData = {
   From: new Date(),
-  To: null,
+  To: '',
 };
 
 const initialState: ResumeData = {

@@ -59,8 +59,8 @@ export interface EducationData {
 }
 
 export interface PeriodData {
-  From: Date
-  To: Date | null
+  From: Date | string
+  To: Date | string
 }
 
 export interface SkillGroupData {

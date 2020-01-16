@@ -16,6 +16,7 @@ import {SkillForm} from "../forms/SkillForm";
 import {EducationForm} from "../forms/EducationForm";
 import {InterestForm} from "../forms/InterestForm";
 import {CertificateForm} from "../forms/CertificateForm";
+import {ExperienceForm} from "../forms/ExpericenceForm";
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
@@ -95,6 +96,10 @@ class home extends React.Component<Props> {
         children: (
           <>
             <Typography variant="h4">Experiences</Typography>
+            <ExperienceForm
+              Experiences={this.props.resume.Experiences}
+              onSubmit={this.handleResumeChange}
+            />
           </>
         )
       },
