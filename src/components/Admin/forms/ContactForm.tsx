@@ -65,51 +65,67 @@ const contactForm = (props: Props) => {
       {({submitForm, values, errors}) => (
         <Form onBlur={submitForm}>
           <Grid container spacing={4}>
-            <Grid item>
-              <Field label="DOB" name="DOB" component={TextField}
-                     type="date"
-                     InputLabelProps={{
-                       shrink: true,
-                     }}
-                     validate={validateRequired}
-              />
-              <br/>
-              <TextLinkInput name="Address" validate={validateRequired}/>
-              <TextLinkInput name="Email" validate={validateRequired}/>
-              <TextLinkInput name="Phone" validate={validateRequired}/>
+            <Grid container item spacing={2}>
+              <Grid item xs={12}>
+                <Field label="DOB" name="DOB" component={TextField}
+                       type="date"
+                       InputLabelProps={{
+                         shrink: true,
+                       }}
+                       required
+                       validate={validateRequired}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextLinkInput name="Address" required validate={validateRequired}/>
+              </Grid>
+              <Grid item xs={12}>
+                <TextLinkInput name="Email" required validate={validateRequired}/>
+              </Grid>
+              <Grid item xs={12}>
+                <TextLinkInput name="Phone" required validate={validateRequired}/>
+              </Grid>
             </Grid>
             <FieldArray name="Others" render={arrayHelpers => (
-              <Grid item>
-                {values.Others && values.Others.length > 0 ? (
-                  values.Others.map((contact, index) => (
-                    <Grid container key={index} spacing={2}>
-                      <Grid item>
-                        <Field label="Type" name={`Others.${index}.Type`} component={TextField}/>
-                      </Grid>
-                      <Grid item>
-                        <TextLinkInput label={(contact.Type || '') + " Contact"} name={`Others.${index}.Value`}/>
-                      </Grid>
-                      <Grid item>
-                        <IconButton aria-label="delete" onClick={() => arrayHelpers.remove(index)}>
-                          <DeleteIcon/>
-                        </IconButton>
-                      </Grid>
-                      <Grid item>
-                        <IconButton aria-label="add"
-                                    onClick={() => arrayHelpers.insert(index + 1, {...initElementValue})}>
-                          <AddCircleIcon/>
-                        </IconButton>
-                      </Grid>
+              values.Others && values.Others.length > 0 ? (
+                values.Others.map((contact, index) => (
+                  <Grid container item key={index} spacing={2}>
+                    <Grid item>
+                      <Field label="Type" name={`Others.${index}.Type`}
+                             component={TextField}
+                             required
+                             validate={validateRequired}
+                      />
                     </Grid>
-                  ))
-                ) : (
+                    <Grid item>
+                      <TextLinkInput label={(contact.Type || '') + " Contact"}
+                                     name={`Others.${index}.Value`}
+                                     required
+                                     validate={validateRequired}
+                      />
+                    </Grid>
+                    <Grid item>
+                      <IconButton aria-label="delete" onClick={() => arrayHelpers.remove(index)}>
+                        <DeleteIcon/>
+                      </IconButton>
+                    </Grid>
+                    <Grid item>
+                      <IconButton aria-label="add"
+                                  onClick={() => arrayHelpers.insert(index + 1, {...initElementValue})}>
+                        <AddCircleIcon/>
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                ))
+              ) : (
+                <Grid item>
                   <Button variant="contained" color="primary"
                           startIcon={<ContactsIcon/>}
                           onClick={() => arrayHelpers.push({...initElementValue})}>
                     Add a contact
                   </Button>
-                )}
-              </Grid>
+                </Grid>
+              )
             )}/>
           </Grid>
         </Form>

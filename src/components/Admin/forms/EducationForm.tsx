@@ -108,10 +108,16 @@ const educationForm = (props: Props) => {
                 values.Languages.map((language, index) => (
                   <Grid container item key={index} spacing={2}>
                     <Grid item>
-                      <Field label="Language" name={`Languages.${index}.Language`} component={TextField}/>
+                      <Field label="Language" name={`Languages.${index}.Language`}
+                             component={TextField}
+                             required
+                             validate={validateRequired}/>
                     </Grid>
                     <Grid item>
-                      <Field label="Level" name={`Languages.${index}.Level`} component={TextField}/>
+                      <Field label="Level" name={`Languages.${index}.Level`}
+                             component={TextField}
+                             required
+                             validate={validateRequired}/>
                     </Grid>
                     <Grid item>
                       <IconButton aria-label="delete" onClick={() => arrayHelpers.remove(index)}>

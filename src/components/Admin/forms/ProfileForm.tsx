@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Field, Form, Formik, FormikHelpers} from 'formik';
 import {TextField,} from 'formik-material-ui';
-import {createStyles, Theme, withStyles, WithStyles} from "@material-ui/core";
+import {createStyles, Grid, Theme, withStyles, WithStyles} from "@material-ui/core";
 import {AboutData, ProfileData} from "../../../interface";
 import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
@@ -59,26 +59,38 @@ const profileForm = (props: Props) => {
     >
       {({submitForm, values, errors}) => (
         <Form onBlur={submitForm}>
-          <Field label="Name" name="Name" component={TextField}
-                 validate={validateRequired}
-          />
-          <br/>
-          <Field label="Title" name="Title" component={TextField}
-                 fullWidth
-                 validate={validateRequired}
-          />
-          <br/>
-          <Field label="Avatar" name="Avatar" component={TextField}
-                 fullWidth
-                 validate={validateRequired}
-          />
-          {values.Avatar && !errors.Avatar && <img src={values.Avatar} className={classes.img} alt="User avatar"/>}
-          <br/>
-          <Field label="About" name="About" component={TextField}
-                 multiline rows="3"
-                 fullWidth
-                 validate={validateRequired}
-          />
+          <Grid container spacing={4}>
+            <Grid item xs={5}>
+              <Field label="Name" name="Name" component={TextField}
+                     fullWidth
+                     required
+                     validate={validateRequired}
+              />
+            </Grid>
+            <Grid item xs={7}>
+              <Field label="Title" name="Title" component={TextField}
+                     fullWidth
+                     required
+                     validate={validateRequired}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Field label="Avatar" name="Avatar" component={TextField}
+                     fullWidth
+                     required
+                     validate={validateRequired}
+              />
+              {values.Avatar && !errors.Avatar && <img src={values.Avatar} className={classes.img} alt="User avatar"/>}
+            </Grid>
+            <Grid item xs={12}>
+              <Field label="About" name="About" component={TextField}
+                     multiline rows="3"
+                     fullWidth
+                     required
+                     validate={validateRequired}
+              />
+            </Grid>
+          </Grid>
         </Form>
       )}
     </Formik>

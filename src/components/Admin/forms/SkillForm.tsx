@@ -10,6 +10,7 @@ import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 
 import {SkillGroupData, SkillItemData} from "../../../interface";
 import {themeStyles} from "../utils/theme";
+import {validateRequired} from "../utils/validators";
 
 type Data = {
   Skills: SkillGroupData[]
@@ -64,7 +65,10 @@ const skillForm = (props: Props) => {
                   <Grid container item spacing={2} key={`group-${index}`}>
                     <Grid container item alignItems="center" spacing={2} xs={12}>
                       <Grid item>
-                        <Field label="Group Name" name={`Skills.${index}.Name`} component={TextField}/>
+                        <Field label="Group Name" name={`Skills.${index}.Name`}
+                               component={TextField}
+                               required
+                               validate={validateRequired}/>
                       </Grid>
                       <Grid item>
                         <Button variant="contained" className={props.classes.warning}
@@ -117,13 +121,17 @@ const SkillItem = (props: SkillItemProps) => {
           props.values.map((skill, index) => (
             <Grid item key={`skill-${index}`}>
               <Field label="Skill Name" name={`${props.name}.${index}.Name`}
-                     component={TextField}/>
+                     component={TextField}
+                     required
+                     validate={validateRequired}/>
               <Field label="Skill Level" name={`${props.name}.${index}.Level`}
                      component={TextField}
                      type="number"
                      InputProps={{
                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
                      }}
+                     required
+                     validate={validateRequired}
               />
               <IconButton aria-label="delete" onClick={() => itemFields.remove(index)}>
                 <DeleteIcon/>
