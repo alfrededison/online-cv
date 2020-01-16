@@ -14,6 +14,7 @@ import {ContactForm} from "../forms/ContactForm";
 import {ProfileForm} from '../forms/ProfileForm';
 import {SkillForm} from "../forms/SkillForm";
 import {EducationForm} from "../forms/EducationForm";
+import {InterestForm} from "../forms/InterestForm";
 
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
@@ -125,6 +126,10 @@ class home extends React.Component<Props> {
         children: (
           <>
             <Typography variant="h4">Interests</Typography>
+            <InterestForm
+              Interests={this.props.resume.Interests}
+              onSubmit={this.handleResumeChange}
+            />
           </>
         )
       }
