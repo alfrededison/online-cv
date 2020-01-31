@@ -23,6 +23,7 @@ import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
 import {TextLinkInput} from "../fragments/TextLinkInput";
 import {PeriodInput} from "../fragments/PeriodInput";
+import ChipInput from "material-ui-chip-input";
 
 type Data = {
   Experiences: ExperienceData[]
@@ -155,6 +156,14 @@ const ProjectItems = (props: ProjectItemsProps) => {
     Responsibilities: '',
   };
 
+  const handleAddChip = (chip: any, array: Array<any>) => {
+    array.push(chip);
+  };
+
+  const handleDeleteChip = (index: number, array: Array<any>) => {
+    array.splice(index, 1);
+  };
+
   return (
     <FieldArray name={props.name} render={itemFields => (
       <Grid container spacing={4}>
@@ -184,6 +193,12 @@ const ProjectItems = (props: ProjectItemsProps) => {
                 <Grid item xs={12}>
                   <SubProjectItems name={`${props.name}.${index}.ResponsibilityGroups`}
                                    values={project.ResponsibilityGroups}/>
+                </Grid>
+                <Grid item xs={12}>
+                  <ChipInput label="Tags" value={project.Tags}
+                    onAdd={(chip) => handleAddChip(chip, project.Tags)}
+                    onDelete={(chip, index) => handleDeleteChip(index, project.Tags)}
+                  />
                 </Grid>
                 <Grid item>
                   <IconButton aria-label="delete" onClick={() => itemFields.remove(index)}>
