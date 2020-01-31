@@ -43,7 +43,7 @@ const experienceForm = (props: Props) => {
     Projects: [
       {
         Description: '',
-        Responsibilities: [''],
+        Responsibilities: '',
       }
     ]
   };
@@ -134,7 +134,7 @@ interface ProjectItemsProps {
 const ProjectItems = (props: ProjectItemsProps) => {
   const initElementValue: ProjectData = {
     Description: '',
-    Responsibilities: [''],
+    Responsibilities: '',
   };
 
   return (
@@ -149,6 +149,15 @@ const ProjectItems = (props: ProjectItemsProps) => {
                        component={TextField}
                        required
                        validate={validateRequired}/>
+              </Grid>
+              <Grid item xs={12}>
+                <Field label="Responsibilities" name={`${props.name}.${index}.Responsibilities`}
+                       component={TextField}
+                       multiline
+                       fullWidth
+                       required
+                       validate={validateRequired}
+                />
               </Grid>
               <Grid item>
                 <IconButton aria-label="delete" onClick={() => itemFields.remove(index)}>

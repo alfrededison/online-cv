@@ -13,7 +13,7 @@ const initialPeriod: PeriodData = {
 };
 
 const initialState: ResumeData = {
-  About: [],
+  About: '',
   Certificates: [],
   Education: {
     Title: '',

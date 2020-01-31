@@ -18,7 +18,7 @@ export interface ProfileData {
   DOB: Date
 }
 
-export type AboutData = string[]
+export type AboutData = string
 
 export interface PrimaryContactData {
   Address: TextLinkData
@@ -45,9 +45,14 @@ export interface ExperienceData {
 
 export interface ProjectData {
   Description: string
-  Responsibilities: string[]
-  ResponsibilityGroups?: ProjectData[]
+  Responsibilities: string
+  ResponsibilityGroups?: SubProjectData[]
   Tags?: string[]
+}
+
+export interface SubProjectData {
+  Description: string
+  Responsibilities: string
 }
 
 export interface EducationData {

@@ -4,7 +4,7 @@ import * as React from 'react';
 import {Fragment} from 'react';
 import {ResumeData} from "../../../interface";
 import Helmet from "react-helmet";
-import {cpaToText, displayYearMonth, generateMetaSkillTags, getIcon} from "../../../utils";
+import {cpaToText, displayYearMonth, generateMetaSkillTags, getIcon, NEWLINE_REGEX} from "../../../utils";
 
 type Props = {
   Resume: ResumeData
@@ -75,7 +75,7 @@ export const Pillar = (props: Props) => {
               <h2 className="resume-section-title text-uppercase font-weight-bold pb-3 mb-3">Career Summary</h2>
               <div className="resume-section-content">
                 <p className="mb-0">
-                  {cv.About.map(item => <Fragment key={btoa(item)}>{item}<br/></Fragment>)}
+                  {cv.About.split(NEWLINE_REGEX).map(item => <Fragment key={btoa(item)}>{item}<br/></Fragment>)}
                 </p>
               </div>
             </section>
@@ -103,12 +103,18 @@ export const Pillar = (props: Props) => {
                               <p>{project.Description}</p>
                               <h4 className="resume-timeline-item-desc-heading font-weight-bold">Achievements:</h4>
                               <ul>
-                                {project.Responsibilities.map(resp => <li key={btoa(resp)}>{resp}</li>)}
+                                {project.Responsibilities
+                                  .split(NEWLINE_REGEX)
+                                  .map(resp => <li key={btoa(resp)}>{resp}</li>)
+                                }
                                 {project.ResponsibilityGroups?.map(group =>
                                   <li key={btoa(group.Description)}>
                                     <p>{group.Description}</p>
                                     <ul>
-                                      {group.Responsibilities.map(resp => <li key={btoa(resp)}>{resp}</li>)}
+                                      {group.Responsibilities
+                                        .split(NEWLINE_REGEX)
+                                        .map(resp => <li key={btoa(resp)}>{resp}</li>)
+                                      }
                                     </ul>
                                   </li>
                                 )}

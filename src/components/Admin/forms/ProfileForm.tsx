@@ -12,11 +12,6 @@ type Data = {
   About: AboutData
 }
 
-type Values = {
-  Profile: ProfileData
-  About: string
-}
-
 interface PropsFromStyles extends WithStyles<typeof styles> {
 }
 
@@ -25,13 +20,13 @@ interface Props extends Data, PropsFromStyles {
 }
 
 const profileForm = (props: Props) => {
-  const initValue: Values = {
+  const initValue: Data = {
     Profile: props.Profile,
-    About: props.About.join("\n"),
+    About: props.About,
   };
 
-  const validators = (values: Values) => {
-    const errors: RecursivePartial<Values> = {};
+  const validators = (values: Data) => {
+    const errors: RecursivePartial<Data> = {};
     if (
       !/^(http(s?):)([/.\w\s-])*\.(?:jpg|png)$/i.test(values.Profile.Avatar)
     ) {
@@ -42,12 +37,8 @@ const profileForm = (props: Props) => {
     return errors;
   };
 
-  const handler = (values: Values, formikHelpers: FormikHelpers<Values>) => {
-    const returnValues: Data = {
-      Profile: values.Profile,
-      About: values.About.split(/\r\n|\r|\n/g)
-    };
-    props.onSubmit(returnValues);
+  const handler = (values: Data, formikHelpers: FormikHelpers<Data>) => {
+    props.onSubmit(values);
     formikHelpers.setSubmitting(false);
   };
 

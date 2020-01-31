@@ -1,5 +1,7 @@
 import {SkillGroupData} from "./interface";
 
+export const NEWLINE_REGEX = /\r\n|\r|\n/g;
+
 export const displayYearMonth = (date: Date) => {
   let mm = date.getMonth() + 1; // getMonth() is zero-based
 
