@@ -29,3 +29,7 @@ export interface UserState {
 export interface UIState {
   errors: JSONData | null | undefined
 }
+
+export type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>;
+};

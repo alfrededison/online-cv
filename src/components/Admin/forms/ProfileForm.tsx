@@ -5,10 +5,7 @@ import {createStyles, Grid, Theme, withStyles, WithStyles} from "@material-ui/co
 import {AboutData, ProfileData} from "../../../interface";
 import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
-
-type RecursivePartial<T> = {
-  [P in keyof T]?: RecursivePartial<T[P]>;
-};
+import {RecursivePartial} from "../interface";
 
 type Data = {
   Profile: ProfileData
