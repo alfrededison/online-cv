@@ -9,6 +9,7 @@ import ContactsIcon from '@material-ui/icons/Contacts';
 import {EducationData, LanguageData} from "../../../interface";
 import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
+import {PeriodInput} from "../fragments/PeriodInput";
 
 type Data = {
   Education: EducationData
@@ -67,25 +68,13 @@ const educationForm = (props: Props) => {
                        required
                        validate={validateRequired}/>
               </Grid>
-              <Grid container item xs={12} lg={6} spacing={2}>
-                <Grid item xs={6}>
-                  <Field label="From" name="Education.Period.From" type="date"
-                         component={TextField}
-                         required
-                         validate={validateRequired}
-                         InputLabelProps={{
-                           shrink: true,
-                         }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <Field label="To" name="Education.Period.To" type="date"
-                         component={TextField}
-                         InputLabelProps={{
-                           shrink: true,
-                         }}
-                  />
-                </Grid>
+              <Grid item xs={12} lg={6}>
+                <PeriodInput name="Education.Period"
+                             fromProps={{
+                               required: true,
+                               validate: {validateRequired},
+                             }}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Field label="Description" name="Education.Description"

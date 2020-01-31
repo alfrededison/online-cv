@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Field, FieldArray, Form, Formik, FormikHelpers} from 'formik';
 import {TextField,} from 'formik-material-ui';
-import {Button, createStyles, Grid, Theme, withStyles, WithStyles, IconButton} from "@material-ui/core";
+import {Button, createStyles, Grid, IconButton, Theme, WithStyles, withStyles} from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import AddIcon from '@material-ui/icons/Add';
@@ -12,6 +12,7 @@ import {ExperienceData, ProjectData} from "../../../interface";
 import {themeStyles} from "../utils/theme";
 import {validateRequired} from "../utils/validators";
 import {TextLinkInput} from "../fragments/TextLinkInput";
+import {PeriodInput} from "../fragments/PeriodInput";
 
 type Data = {
   Experiences: ExperienceData[]
@@ -97,25 +98,13 @@ const experienceForm = (props: Props) => {
                                      validate={validateRequired}
                       />
                     </Grid>
-                    <Grid container item xs={12} lg={6}>
-                      <Grid item xs={5}>
-                        <Field label="From" name={`Experiences.${index}.Period.From`} type="date"
-                               component={TextField}
-                               required
-                               validate={validateRequired}
-                               InputLabelProps={{
-                                 shrink: true,
-                               }}
-                        />
-                      </Grid>
-                      <Grid item xs={5}>
-                        <Field label="To" name={`Experiences.${index}.Period.To`} type="date"
-                               component={TextField}
-                               InputLabelProps={{
-                                 shrink: true,
-                               }}
-                        />
-                      </Grid>
+                    <Grid item xs={12} lg={6}>
+                      <PeriodInput name={`Experiences.${index}.Period`}
+                                   fromProps={{
+                                     required: true,
+                                     validate: {validateRequired},
+                                   }}
+                      />
                     </Grid>
                     <ProjectItems name={`Experiences.${index}.Projects`} values={experienceGroup.Projects}/>
                   </Grid>
