@@ -28,7 +28,7 @@ const profileForm = (props: Props) => {
   const validators = (values: Data) => {
     const errors: RecursivePartial<Data> = {};
     if (
-      !/^(http(s?):)([/.\w\s-])*\.(?:jpg|png)$/i.test(values.Profile.Avatar)
+      !/^(http(s?):)([/.\w\s-])*\.(?:jpg|png)((\?.*)?$|$)/i.test(values.Profile.Avatar)
     ) {
       errors.Profile = {
         Avatar: 'Invalid image address'
