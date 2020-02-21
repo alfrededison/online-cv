@@ -16,7 +16,7 @@ export const Pillar = (props: Props) => {
       <Helmet>
         <title>{cv.Profile.Name + " - " + cv.Profile.Title}</title>
         <meta name="theme-color" content="#429bf6"/>
-        <meta name="description" content={cv.About[0]}/>
+        <meta name="description" content={cv.About.split(NEWLINE_REGEX)[0]}/>
         <meta name="keywords" content={generateMetaSkillTags(cv.Skills)}/>
         <link rel="canonical" href={process.env.REACT_APP_HOSTING_URL}/>
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900" rel="stylesheet"/>
