@@ -13,4 +13,12 @@
     left: 0;
     top: 0;
   }
+
+  a:link {
+    text-decoration: none !important;
+  }
+  
+  a[href]:after {
+    content: none !important;
+  }
 }
