@@ -6,14 +6,14 @@ import {Spinner} from "../Spinner/Spinner";
 import {Resume} from "../Resume/Resume";
 import {Admin} from "../Admin/Admin";
 import NotFound from "../NotFound/NotFound";
+import Home from './Home';
 
 axios.defaults.baseURL = process.env.REACT_APP_FUNCTION_URL;
 
 const App: React.FC = () => {
-  const resumeId = process.env.REACT_APP_USER_ID || '';
   return <BrowserRouter>
     <Switch>
-      <Route exact path="/" render={(props) => <Resume resumeId={resumeId}/>}/>
+      <Route exact path="/" render={(props) => <Home/>}/>
       <Route path="/view/:resumeId" render={(props) => <Resume resumeId={props.match.params.resumeId}/>}/>
       <Route path="/manage" component={Admin}/>
       <Route component={NotFound}/>

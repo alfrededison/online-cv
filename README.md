@@ -31,8 +31,6 @@ Use by POST request to `/resume/:your-desired-resume-id` with body structured de
 ## Front end
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Use your resume ID above and set for environment `REACT_APP_USER_ID`.
-
 ### Available Scripts
 
 In the project directory, you can run:
