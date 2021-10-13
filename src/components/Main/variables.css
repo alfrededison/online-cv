@@ -1,0 +1,6 @@
+:root {
+    --images-cta-illustration: url('/images/cta-illustration.svg');
+    --images-hero-back-illustration: url('/images/hero-back-illustration.svg');
+    --images-hero-top-illustration: url('/images/hero-top-illustration.svg');
+    --images-pricing-illustration: url('/images/pricing-illustration.svg');
+}

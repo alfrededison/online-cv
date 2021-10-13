@@ -59,7 +59,7 @@ export class Admin extends React.Component<RouteComponentProps> {
           </Helmet>
           <BrowserRouter>
             <NavBar rootUrl={match.url}/>
-            <div className="container">
+            <div className="admin-container">
               <Switch>
                 <ProtectedRoute path={`${match.url}/preview`} component={Preview}/>
                 <AuthRoute path={`${match.url}/login`} component={Login}/>
